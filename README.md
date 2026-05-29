@@ -4,7 +4,7 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 ![GitHub Action](https://github.com/bitfinexcom/bitfinex-api-py/actions/workflows/build.yml/badge.svg)
 
-Official implementation of the [Bitfinex APIs (V2)](https://docs.bitfinex.com/docs) for `Python 3.8+`.
+Official implementation of the [Bitfinex APIs (V2)](https://docs.bitfinex.com/docs) for `Python 3.10+`.
 
 ### Features
 
@@ -316,7 +316,7 @@ Contributors must uphold the [Contributor Covenant code of conduct](https://gith
 
 ## Installation and setup
 
-A brief guide on how to install and set up the project in your Python 3.8+ environment.
+A brief guide on how to install and set up the project in your Python 3.10+ environment.
 
 ### Cloning the repository
 
@@ -326,31 +326,41 @@ git clone https://github.com/bitfinexcom/bitfinex-api-py.git
 
 ### Installing the dependencies
 
+We use modern Python packaging managed by `pyproject.toml`. It is highly recommended to use [uv](https://github.com/astral-sh/uv) to manage your virtual environment and dependencies.
+
 ```console
-python3 -m pip install -r dev-requirements.txt
+uv sync
 ```
 
-Make sure to install `dev-requirements.txt` (and not `requirements.txt`!). \
-`dev-requirements.txt` will install all dependencies in `requirements.txt` plus any development dependency. \
-dev-requirements includes [mypy](https://github.com/python/mypy), [black](https://github.com/psf/black), [isort](https://github.com/PyCQA/isort), [flake8](https://github.com/PyCQA/flake8), and [pre-commit](https://github.com/pre-commit/pre-commit) (more on these tools in later chapters).
+This single command will automatically:
+1. Create a virtual environment (`.venv`).
+2. Install the package in editable mode.
+3. Install all production and development tools (such as [mypy](https://github.com/python/mypy), [ruff](https://github.com/astral-sh/ruff), and [pre-commit](https://github.com/pre-commit/pre-commit)).
 
-All done, your Python 3.8+ environment should now be able to run `bitfinex-api-py`'s source code.
+#### Using standard `pip>=25.1`
+
+If you prefer traditional pip, set up your virtual environment manually and run:
+```console
+python3 -m pip install -e ".[dev]"
+```
+
+All done, your Python 3.10+ environment should now be able to run `bitfinex-api-py`'s source code.
 
 ### Set up the pre-commit hooks (optional)
 
 **Do not skip this paragraph if you intend to contribute to the project.**
 
 This repository includes a pre-commit configuration file that defines the following hooks:
-1. [isort](https://github.com/PyCQA/isort)
-2. [black](https://github.com/psf/black)
-3. [flake8](https://github.com/PyCQA/flake8)
+1. **`ruff-check`**: Extremely fast Python linter that replaces flake8, flake8-bugbear, and automatically sorts import statements (replacing isort).
+2. **`ruff-format`**: An extremely fast Python formatter, 100% compatible with Black.
 
 To set up pre-commit use:
 ```console
-python3 -m pre-commit install
+uv run pre-commit install
 ```
+*(Or `python3 -m pre-commit install` if using `pip`)*
 
-These will ensure that isort, black and flake8 are run on each git commit.
+This ensures that code formatting, import sorting, and linting checks are automatically run on each git commit.
 
 [Visit this page to learn more about git hooks and pre-commit.](https://pre-commit.com/#introduction)
 
@@ -358,8 +368,9 @@ These will ensure that isort, black and flake8 are run on each git commit.
 
 You can also manually trigger the execution of all hooks with:
 ```console
-python3 -m pre-commit run --all-files
+uv run pre-commit run --all-files
 ```
+*(Or `python3 -m pre-commit run --all-files` if using `pip`)*
 
 ## Before opening a PR
 
